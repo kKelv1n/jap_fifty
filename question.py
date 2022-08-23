@@ -143,7 +143,9 @@ class Selection(QuestionItf):
         for key, val in self.__choices.items():
             if key == self.__right_key:
                 continue
-            x, y = utils.rand_idx_except(n, m, used_x, used_y)
+            x, y = utils.rand_idx_exclude(n, m, used_x, used_y)
+            used_x.append(x)
+            used_y.append(y)
             r, h, k = _get_data(x, y)
             if self.q_type == QuestionType.AskRomaByHiragana or self.q_type == QuestionType.AskRomaByKatakana:
                 self.__choices[key] = r
