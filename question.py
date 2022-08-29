@@ -139,14 +139,19 @@ class Selection(QuestionItf):
             self.__choices[self.__right_key] = self._k
 
     def __set_other_choices(self):
-        used_x, used_y = [self._x], [self._y]
+        used_x, used_y = [self._x], [self._y]   # used_x and used_y are used to record used positions
+        _, right_h, right_k = _get_data(self._x, self._y)
         for key, val in self.__choices.items():
+            # continue when it is a right choice
             if key == self.__right_key:
                 continue
             x, y = utils.rand_idx_exclude(n, m, used_x, used_y)
+            r, h, k = _get_data(x, y)
+            # different position may have the same hiragana or katakana
+            if h == right_h or k == right_k:
+                continue
             used_x.append(x)
             used_y.append(y)
-            r, h, k = _get_data(x, y)
             if self.q_type == QuestionType.AskRomaByHiragana or self.q_type == QuestionType.AskRomaByKatakana:
                 self.__choices[key] = r
             elif self.q_type == QuestionType.AskHiraganaByRoma or self.q_type == QuestionType.AskHiraganaByKatakana:
